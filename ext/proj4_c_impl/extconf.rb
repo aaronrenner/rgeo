@@ -54,6 +54,7 @@ else
      '/Library/Frameworks/PROJ.framework/unix/include',
      ::RbConfig::CONFIG['includedir'],
      '/usr/include',
+     '/app/include', # Heroku
     ]
   lib_dirs_ =
     [
@@ -69,6 +70,7 @@ else
      ::RbConfig::CONFIG['libdir'],
      '/usr/lib',
      '/usr/lib64',
+     '/app/lib', #Heroku
     ]
   header_dirs_.delete_if{ |path_| !::File.directory?(path_) }
   lib_dirs_.delete_if{ |path_| !::File.directory?(path_) }
