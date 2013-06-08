@@ -34,6 +34,11 @@
 ;
 
 
+def lib_dir_strings(lib_dirs)
+  Array(lib_dirs).collect{|dir| "-L#{dir}"}.join(" ")
+end
+
+
 if ::RUBY_DESCRIPTION =~ /^jruby\s/
 
   ::File.open('Makefile', 'w'){ |f_| f_.write(".PHONY: install\ninstall:\n") }
@@ -72,7 +77,7 @@ else
   found_geos_ = false
   header_dirs_, lib_dirs_ = dir_config('geos', header_dirs_, lib_dirs_)
   if have_header('geos_c.h')
-    $libs << " -L#{lib_dirs_.join(":")} -lgeos -lgeos_c"
+    $libs << " #{lib_dir_strings(lib_dirs_)} -lgeos -lgeos_c"
     if have_func('GEOSSetSRID_r', 'geos_c.h')
       found_geos_ = true
     else
