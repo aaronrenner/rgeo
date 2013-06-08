@@ -78,7 +78,7 @@ else
   found_proj_ = false
   header_dirs_, lib_dirs_ = dir_config('proj', header_dirs_, lib_dirs_)
   if have_header('proj_api.h')
-    $libs << ' -lproj'
+    $libs << " -L#{lib_dirs_.join(':')} -lproj"
     if have_func('pj_init_plus', 'proj_api.h')
       found_proj_ = true
     else
