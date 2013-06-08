@@ -34,6 +34,11 @@
 ;
 
 
+def lib_dir_strings(lib_dirs)
+  Array(lib_dirs).collect{|dir| "-L#{dir}"}.join(" ")
+end
+
+
 if ::RUBY_DESCRIPTION =~ /^jruby\s/
 
   ::File.open('Makefile', 'w'){ |f_| f_.write(".PHONY: install\ninstall:\n") }
@@ -78,7 +83,7 @@ else
   found_proj_ = false
   header_dirs_, lib_dirs_ = dir_config('proj', header_dirs_, lib_dirs_)
   if have_header('proj_api.h')
-    $libs << " -L#{lib_dirs_.join(':')} -lproj"
+    $libs << " #{lib_dir_strings(lib_dirs_)} -lproj"
     if have_func('pj_init_plus', 'proj_api.h')
       found_proj_ = true
     else
