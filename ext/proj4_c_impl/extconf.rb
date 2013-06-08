@@ -54,7 +54,6 @@ else
      '/Library/Frameworks/PROJ.framework/unix/include',
      ::RbConfig::CONFIG['includedir'],
      '/usr/include',
-     '/app/include', #Heroku
     ]
   lib_dirs_ =
     [
@@ -70,7 +69,6 @@ else
      ::RbConfig::CONFIG['libdir'],
      '/usr/lib',
      '/usr/lib64',
-     '/app/lib', #Heroku
     ]
   header_dirs_.delete_if{ |path_| !::File.directory?(path_) }
   lib_dirs_.delete_if{ |path_| !::File.directory?(path_) }
@@ -78,7 +76,7 @@ else
   found_proj_ = false
   header_dirs_, lib_dirs_ = dir_config('proj', header_dirs_, lib_dirs_)
   if have_header('proj_api.h')
-    $libs << ' -lproj'
+    $libs << " -L#{lib_dirs_.join(':')} -lproj"
     if have_func('pj_init_plus', 'proj_api.h')
       found_proj_ = true
     else

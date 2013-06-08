@@ -52,7 +52,6 @@ else
      '/Library/Frameworks/GEOS.framework/unix/include',
      ::RbConfig::CONFIG['includedir'],
      '/usr/include',
-     '/app/include', # Heroku
     ]
   lib_dirs_ =
     [
@@ -66,7 +65,6 @@ else
      ::RbConfig::CONFIG['libdir'],
      '/usr/lib64',
      '/usr/lib',
-     '/app/lib', # Heroku
     ]
   header_dirs_.delete_if{ |path_| !::File.directory?(path_) }
   lib_dirs_.delete_if{ |path_| !::File.directory?(path_) }
@@ -74,7 +72,7 @@ else
   found_geos_ = false
   header_dirs_, lib_dirs_ = dir_config('geos', header_dirs_, lib_dirs_)
   if have_header('geos_c.h')
-    $libs << ' -lgeos -lgeos_c'
+    $libs << " -L#{lib_dirs_.join(":")} -lgeos -lgeos_c"
     if have_func('GEOSSetSRID_r', 'geos_c.h')
       found_geos_ = true
     else
